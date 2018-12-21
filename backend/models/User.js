@@ -10,8 +10,8 @@ const userSchema = new Schema({
   }, 
   role: {
     type: String,
-    enum: ['administrador', 'tesorero', 'seguridad', 'condomino', 'vigilante'],
-    default: "condomino"
+    enum: ['Administrador', 'Tesorero', 'Seguridad', 'Residente', 'Vigilante'],
+    default: "Residente"
   },
   home: String,
   job: {
@@ -19,7 +19,10 @@ const userSchema = new Schema({
     enum: ['plomero', 'jardinero', 'mecánico', 'electricista', 'abogado', 'médico', 'dentista', 'contador', 'none'],
     default: 'none'
   },
-  photo: String
+  photoURL: {
+    type: String,
+    default: "/profile.png"
+  }
 },{
   timestamps: {
     createdAt: true,

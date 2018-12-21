@@ -21,6 +21,13 @@ router.get('/logout', (req,res,next) => {
   res.status(200).json({message: 'Succesfully logged out'})
 })
 
+router.post('/update', (req,res,next) => {
+  console.log(req.body)
+  User.findByIdAndUpdate(req.body._id,{$set:req.body}, {new: true})
+  .then(user => res.status(201).json(user))
+  .catch(err => res.status(500).json(err))
+})
+
 const isAuth = (req,res,next) => {
   if(req.isAuthenticated()) return next()
   return res.status(403).json({message: 'User not logged in'})

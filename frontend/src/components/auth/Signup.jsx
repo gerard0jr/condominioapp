@@ -11,6 +11,12 @@ export default class Signup extends Component {
         user: {}
     }
     
+    componentDidMount(){
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) return this.setState({ user: {}, isAuth: false });
+        this.props.history.push('/app')
+    }
+    
     handleSubmit = (e) => {
         const { user } = this.state
         e.preventDefault()

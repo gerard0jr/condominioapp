@@ -7,19 +7,30 @@ import {AppBar, Toolbar, Typography, Button, IconButton,
   Drawer, List, Divider, ListItem, ListItemIcon, ListItemText, Snackbar} from '@material-ui/core';
 import {Menu, ChevronLeft, ChevronRight, Home, Close} from '@material-ui/icons';
 
+import Profile from './Profile'
+
 export default class HomeComponent extends Component {
   state = {
     left: false,
     user: {},
-    open: false
+    open: false,
+    message:""
   }
+  
+  componentDidMount(){
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user) return this.props.history.push('/auth/login')
+    if (this.props.history.goBack.length === 0) this.setState({ open: true, message: "Bienvenido" })
+    return this.setState({ user, isAuth: true });
+    
+}
 
     logout = () => {
       logout()
       .then(res => {
-        console.log(res)
-        this.setState({ open: true })
-        this.props.history.push('/auth/login')
+        localStorage.removeItem('user')
+          this.props.history.push('/')
+				
       })
       .catch(err => console.log(err))
     }
@@ -37,14 +48,13 @@ export default class HomeComponent extends Component {
   }
   
   render() {
-    const { left, user, open } = this.state
+    const { left, open, message, user } = this.state
     const { logout, handleClose } = this
-    console.log(user)
     const sideList = (
       <div style={{width: 250}}>
         <List>
 
-          <Link exact to="/" 
+          <Link exact to="/app" 
             style={{textDecoration: "none"}}>
             <ListItem button >
               <ListItemIcon><Home/></ListItemIcon>
@@ -61,8 +71,8 @@ export default class HomeComponent extends Component {
       </div>
     )
     return (
-      <div>
-        <AppBar style={{backgroundColor:"#03a9f4"}} position="static">
+      <div style={{marginBottom:"6em"}}>
+        <AppBar position="Fixed">
             <Toolbar>
             <IconButton onClick={this.toggleDrawer('left', true)}
                 style={{ marginLeft: -12, marginRight: 20,}} 
@@ -85,9 +95,18 @@ export default class HomeComponent extends Component {
             <Typography variant="h6" color="inherit" style={{flexGrow: 1}}>
                 CONDOMI
             </Typography>
-            <Link style={{borderRadius:"5px", textDecoration:"none", color:"white", backgroundColor:"#8bc34a"}} to="/app">
-              <Button color="inherit">Inicio</Button>
-            </Link>
+            {/* PHOTO */}
+            <div style={{display:"flex", flexWrap:"wrap", alignItems:"center"}}>
+              <p>{user.role}</p>
+              <Link to="/app/profile">
+                <img style={{
+                  width:"40px",
+                  height:"40px",
+                  borderRadius:"50%",
+                  marginLeft:"10px"
+                }} src={user.photoURL} alt={user.name}/>
+              </Link>
+            </div>
             </Toolbar>
         </AppBar>
         <Snackbar
@@ -101,7 +120,7 @@ export default class HomeComponent extends Component {
           ContentProps={{
             'aria-describedby': 'message-id',
           }}
-          message={<span id="message-id">Sesión cerrada correctamente</span>}
+          message={<span id="message-id">{message}</span>}
           action={[
             <IconButton
               key="close"

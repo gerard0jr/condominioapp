@@ -1,28 +1,37 @@
 import React, { Component } from 'react'
 import { Link }  from 'react-router-dom'
-import { profile } from '../../services/auth'
-import { TextField, Button, MenuItem } from '@material-ui/core'
+import { update } from '../../services/auth'
+import { TextField, Button, MenuItem, Snackbar, IconButton, CircularProgress} from '@material-ui/core'
+import {Close} from '@material-ui/icons'
+import firebase from '../../services/firebase'
 
 export default class Profile extends Component {
     
     state = { 
         disabled: true,
         error: false,
-        user: {}
+        user: {},
+        open: false,
+        message:"",
+        progress:0
     }
     
     componentDidMount = () => {
-        profile()
-        .then(res => {
-            if(res.status === 403) return this.props.history.push('/auth/login')
-            return this.setState({user:res})
-        })
-        .catch(err => console.log(err))
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) return this.props.history.push('/auth/login')
+        return this.setState({ user, isAuth: true });
     }
 
     handleSubmit = (e) => {
         const { user } = this.state
         e.preventDefault()
+        update(user)
+        .then(res => {
+            localStorage.setItem('user', JSON.stringify(res))
+            this.setState({user, open:true, message:"Actualizado correctamente"})
+        })
+        .catch(err =>  console.log(err))
+
     }
 
     handleChange = input => event => {
@@ -33,14 +42,60 @@ export default class Profile extends Component {
         })
       }
 
+      handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        this.setState({ open: false });
+      };
+
+      uploadPhoto = (e) => {
+        const { user } = this.state
+        const file = e.target.files[0]
+        console.log(file)
+        const task = firebase.storage().ref('profilePics').child(file.name).put(file)
+
+        task.on("state_changed", snap => {
+            let progress = (snap.bytesTransferred / snap.totalBytes) * 100
+            progress = Math.floor(progress)
+            this.setState({ progress })
+        })
+
+        task
+        .then(snap=>snap.ref.getDownloadURL())
+        .then(link=>{
+            user['photoURL'] = link
+            localStorage.setItem('user', JSON.stringify(user))
+            this.setState({user})
+        })
+
+      }
+
+      clickInput = () => {
+        document.getElementById('photoUpload').click()
+      }
 
   render() {
-      const { handleChange, handleSubmit } = this
-      const { user, disabled, error } = this.state
+      const { handleChange, handleSubmit, handleClose, uploadPhoto, clickInput } = this
+      const { user, error, open, message, progress } = this.state
     return (
       <div>
-          <h2>Perfil</h2>
+          <img onClick={clickInput} style={{
+              width:"200px",
+              height:"200px",
+              borderRadius: "50%",
+              objectFit:"contain",
+              backgroundColor:"gray"
+          }} src={user.photoURL} alt={user.name}/>
+            {progress < 99 && progress > 0 ? 
+            <CircularProgress
+            variant="static"
+            value={progress}
+            /> : <div style={{display:"none"}}></div>}
+          <h2>Perfil de {user.name}</h2>
         <form onSubmit={handleSubmit}>
+        <input onChange={uploadPhoto} type="file" name="photoURL" id="photoUpload" style={{display:"none"}}/>
         {/* EMAIL */}
         <div>
             <TextField
@@ -120,10 +175,33 @@ export default class Profile extends Component {
         </div>
         
        
-        <Button type="submit" id="sendButton" disabled={disabled} variant="contained" color="primary" style={{margin:"1em"}}>
-            Iniciar sesión
+        <Button type="submit" id="sendButton" variant="contained" color="primary" style={{margin:"1em"}}>
+            Actualizar perfil
         </Button>
         </form>
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          open={open}
+          autoHideDuration={6000}
+          onClose={handleClose}
+          ContentProps={{
+            'aria-describedby': 'message-id',
+          }}
+          message={<span id="message-id">{message}</span>}
+          action={[
+            <IconButton
+              key="close"
+              aria-label="Close"
+              color="inherit"
+              onClick={handleClose}
+            >
+              <Close />
+            </IconButton>
+          ]}
+        />
       </div>
     )
   }

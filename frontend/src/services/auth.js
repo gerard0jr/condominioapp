@@ -26,6 +26,12 @@ export const logout = () => {
     .catch(e => e.response)
 }
 
+export const update = (user) => {
+    return axios.post(host + '/update', user, {})
+    .then(res => res.data)
+    .catch(err => err.response)
+}
+
 export const uploadPhoto = (file) => {
     firebase.storage().ref('userPhotos').child(file.name).put(file)
 }

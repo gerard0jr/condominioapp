@@ -23,7 +23,7 @@ export default class AuthContainer extends Component {
       <div style={{width: 250}}>
         <List>
 
-          <Link exact to="/login" 
+          <Link exact to="/auth/login" 
             style={{textDecoration: "none"}}>
             <ListItem button >
               <ListItemIcon><Home/></ListItemIcon>
@@ -35,8 +35,8 @@ export default class AuthContainer extends Component {
       </div>
     )
     return (
-      <div>
-        <AppBar style={{backgroundColor:"#03a9f4"}} position="static">
+      <div style={{marginBottom:"6em"}}>
+        <AppBar position="Fixed">
             <Toolbar>
             <IconButton onClick={this.toggleDrawer('left', true)}
                 style={{ marginLeft: -12, marginRight: 20,}} 
@@ -59,9 +59,7 @@ export default class AuthContainer extends Component {
             <Typography variant="h6" color="inherit" style={{flexGrow: 1}}>
                 CONDOMI
             </Typography>
-            <Link style={{borderRadius:"5px", textDecoration:"none", color:"white", backgroundColor:"#8bc34a"}} to="/app">
-              <Button color="inherit">Iniciar sesión</Button>
-            </Link>
+            {/* PHOTO */}
             </Toolbar>
         </AppBar>
         
