@@ -14,7 +14,7 @@ export default class Profile extends Component {
     componentDidMount = () => {
         profile()
         .then(res => {
-            if(res.status === 403) return this.props.history.push('/login')
+            if(res.status === 403) return this.props.history.push('/auth/login')
             return this.setState({user:res})
         })
         .catch(err => console.log(err))

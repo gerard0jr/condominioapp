@@ -4,16 +4,23 @@ import HomeComponent from './components/home/HomeComponent';
 import Signup from './components/auth/Signup';
 import Login from './components/auth/Login';
 import Profile from './components/home/Profile';
+import AuthContainer from './components/auth/AuthContainer';
+import Landing from './components/home/Landing';
 
 const Routes = () => {
-  return (
+  return (<div>
+    <Route path="/auth" component={AuthContainer} />
     <Switch>
-      <Route exact path="/" component={HomeComponent} />
-      <Route path="/signup" component={Signup} />
-      <Route path="/login" component={Login} />
-      <Route path="/profile" component={Profile} />
-      <Route path="/logout" component={HomeComponent} />
+      <Route path="/auth/signup" component={Signup} />
+      <Route path="/auth/login" component={Login} />
     </Switch>
+    <Route path="/app" component={HomeComponent} />
+    <Switch>
+      <Route exact path="/app" component={Landing}/>
+      <Route path="/app/profile" component={Profile} />
+    </Switch>
+  </div>
+    
   )
 }
 

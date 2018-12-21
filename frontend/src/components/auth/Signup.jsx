@@ -15,14 +15,20 @@ export default class Signup extends Component {
         const { user } = this.state
         e.preventDefault()
         signup(user)
-        .then(res => this.props.history.push('/profile'))
+        .then(res => {
+            if(res.status !== 200){
+                return this.setState({open: true, message: res.data.message})
+            }
+            localStorage.setItem('user', JSON.stringify(res.data))
+            this.setState({open: true, message: "Registro correcto, ¡Bienvenido(a)!"})
+            this.props.history.push('/app/profile')
+        })
         .catch(err => console.log(err))
     }
 
     handleChange = input => event => {
         const { user } = this.state
         user[input] = event.target.value
-        console.log(user)
         this.setState({
           user
         })

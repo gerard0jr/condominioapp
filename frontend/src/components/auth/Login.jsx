@@ -1,14 +1,24 @@
 import React, { Component } from 'react'
 import { Link }  from 'react-router-dom'
 import { login } from '../../services/auth'
-import { TextField, Button } from '@material-ui/core'
+import { TextField, Button, Snackbar, IconButton } from '@material-ui/core'
+import {Close} from '@material-ui/icons';
 
 export default class Login extends Component {
     
     state = { 
         disabled: true,
         error: false,
-        user: {}
+        user: {},
+        isAuth: false,
+        open: false,
+        message: ""
+    }
+
+    componentDidMount(){
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) return this.setState({ user: {}, isAuth: false });
+        this.props.history.push('/app')
     }
     
     handleSubmit = (e) => {
@@ -16,10 +26,17 @@ export default class Login extends Component {
         e.preventDefault()
         login(user)
         .then(res => {
-            this.setState({user})
-            this.props.history.push('/home')
+            console.log(res)
+            if(res.email){
+                console.log('logueado')
+                localStorage.setItem('user', JSON.stringify(res))
+                this.setState({open: true, message: "Inicio de sesión correcto, ¡Bienvenido(a)!"})
+                this.props.history.push('/app/profile')
+            }
+            return this.setState({open: true, message: "Nombre de usuario o contraseña incorrectos"})
+            
         })
-        .catch(err => console.log(err))
+        .catch(err => this.setState({message: err}))
     }
 
     handleChange = input => event => {
@@ -30,6 +47,14 @@ export default class Login extends Component {
         })
       }
 
+      handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        this.setState({ open: false });
+      };
+
     checkEmail = input => event => {
         const emailRegEx = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         if(emailRegEx.test(String(event.target.value).toLowerCase())) return this.setState({error: false, disabled: false})
@@ -38,8 +63,8 @@ export default class Login extends Component {
     }
 
   render() {
-      const { handleChange, handleSubmit, checkEmail } = this
-      const { user, disabled, error } = this.state
+      const { handleChange, handleSubmit, checkEmail, handleClose } = this
+      const { user, disabled, error, open, message } = this.state
     return (
       <div>
           <h2>Inicia sesión</h2>
@@ -85,6 +110,30 @@ export default class Login extends Component {
             Iniciar sesión
         </Button>
         </form>
+
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          open={open}
+          autoHideDuration={6000}
+          onClose={handleClose}
+          ContentProps={{
+            'aria-describedby': 'message-id',
+          }}
+          message={<span id="message-id">{message}</span>}
+          action={[
+            <IconButton
+              key="close"
+              aria-label="Close"
+              color="inherit"
+              onClick={handleClose}
+            >
+              <Close />
+            </IconButton>
+          ]}
+        />
       </div>
     )
   }
