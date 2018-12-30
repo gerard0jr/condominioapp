@@ -1,31 +1,48 @@
 import React, { Component } from 'react'
 import { Link }  from 'react-router-dom'
 import { signup } from '../../services/auth'
-import { TextField, MenuItem, Button } from '@material-ui/core'
+import { getResidences } from '../../services/database'
+import { TextField, MenuItem, Button, Snackbar, IconButton } from '@material-ui/core'
+import { Close } from '@material-ui/icons'
 
 export default class Signup extends Component {
     
     state = { 
         disabled: true,
         error: false,
-        user: {}
+        user: {},
+        open: false,
+        message: "",
+        residences: []
     }
     
     componentDidMount(){
+        getResidences()
+        .then(residences => this.setState({residences}))
+        .catch(e => console.log(e))
         const user = JSON.parse(localStorage.getItem('user'));
         if (!user) return this.setState({ user: {}, isAuth: false });
         this.props.history.push('/app')
     }
-    
+
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        this.setState({ open: false });
+    };
+
     handleSubmit = (e) => {
         const { user } = this.state
         e.preventDefault()
         signup(user)
         .then(res => {
-            if(res.status !== 200){
+            console.log(res)
+            if(res.status === 500){
                 return this.setState({open: true, message: res.data.message})
             }
-            localStorage.setItem('user', JSON.stringify(res.data))
+            localStorage.setItem('user', JSON.stringify(res))
             this.setState({open: true, message: "Registro correcto, ¡Bienvenido(a)!"})
             this.props.history.push('/app/profile')
         })
@@ -55,11 +72,47 @@ export default class Signup extends Component {
     }
 
   render() {
-      const { handleChange, checkPassword, handleSubmit, checkEmail } = this
-      const { user, disabled, error } = this.state
+      const { handleChange, checkPassword, handleSubmit, checkEmail, handleClose } = this
+      const { user, disabled, error, residences, open, message } = this.state
     return (
-      <div>
-          <h2>Registro de usuario</h2>
+      <div style={{marginBottom:"1em"}}>
+        <div style={{
+        width:"100vw",
+        height:"40vh",
+        position: "relative"
+        }}>
+            <div style={{
+                width:"100%",
+                height:"100%",
+                backgroundColor:"rgba(0,0,0,0.15)",
+                position: "absolute",
+                top:"0",
+                left:"0"
+            }}></div>
+            <div style={{
+                backgroundImage:'url(/signupBanner.jpg)',
+                backgroundSize:"cover",
+                backgroundRepeat:"no-repeat",
+                backgroundPosition:"center",
+                width:"100%",
+                height:"100%"
+                }}>
+            </div>
+            <div style={{
+                textAlign: "center",
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                color: "white",
+                fontWeight: "bold",
+                fontSize: "1.5em",
+                fontFamily: "Roboto",
+                textShadow: "1px 1px 4px #000"
+            }}><h2>Registro de usuario</h2>
+            </div>
+        </div>
+        <h3>Ingresa tus datos</h3>
         <form onSubmit={handleSubmit}>
             {/* NAME */}
         <div>
@@ -145,6 +198,28 @@ export default class Signup extends Component {
             margin="normal"
             />
         </div>
+        <div>
+            <TextField
+            InputLabelProps={{ shrink: true }}
+            id="Residence"
+            select
+            label="Condominio"
+            onChange={handleChange('residence')}
+            style={{
+                marginLeft: 0,
+                marginRight: 0,
+                width: 200
+            }}
+            value={user.residence}
+            margin="normal"
+            >
+                {residences.map((residence, key) => (
+                    <MenuItem key={key} value={residence._id}>
+                    {residence.name}
+                    </MenuItem>
+                ))}
+            </TextField>
+        </div>
         {/* JOB */}
         <div>
             <TextField
@@ -169,10 +244,34 @@ export default class Signup extends Component {
                 ))}
             </TextField>
         </div>
-        <Button type="submit" id="sendButton" disabled={disabled} variant="contained" color="primary" style={{margin:"1em"}}>
+        <Button type="submit" id="sendButton" disabled={disabled} variant="contained" color="secondary" style={{margin:"1em"}}>
             Crear
         </Button>
         </form>
+        <Snackbar
+          color="secondary"
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          open={open}
+          autoHideDuration={6000}
+          onClose={handleClose}
+          ContentProps={{
+            'aria-describedby': 'message-id',
+          }}
+          message={<span id="message-id">{message}</span>}
+          action={[
+            <IconButton
+              key="close"
+              aria-label="Close"
+              color="inherit"
+              onClick={handleClose}
+            >
+              <Close />
+            </IconButton>
+          ]}
+        />
       </div>
     )
   }

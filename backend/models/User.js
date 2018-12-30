@@ -8,6 +8,10 @@ const userSchema = new Schema({
     unique: true,
     required: true
   }, 
+  residence: {
+    type: Schema.Types.ObjectId,
+    ref: "residence"
+  },
   role: {
     type: String,
     enum: ['Administrador', 'Tesorero', 'Seguridad', 'Residente', 'Vigilante'],

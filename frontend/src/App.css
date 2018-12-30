@@ -22,6 +22,16 @@
   color: #61dafb;
 }
 
+.navMargin{
+  margin-bottom: 4em;
+}
+
+@media(max-width:600px){
+  .navMargin{
+    margin-bottom: 3em;
+  } 
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

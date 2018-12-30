@@ -54,7 +54,7 @@ export default class Profile extends Component {
         const { user } = this.state
         const file = e.target.files[0]
         console.log(file)
-        const task = firebase.storage().ref('profilePics').child(file.name).put(file)
+        const task = firebase.storage().ref('profilePics').child(user._id + file.name).put(file)
 
         task.on("state_changed", snap => {
             let progress = (snap.bytesTransferred / snap.totalBytes) * 100
@@ -80,7 +80,7 @@ export default class Profile extends Component {
       const { handleChange, handleSubmit, handleClose, uploadPhoto, clickInput } = this
       const { user, error, open, message, progress } = this.state
     return (
-      <div>
+      <div style={{marginTop:"6em"}}>
           <img onClick={clickInput} style={{
               width:"200px",
               height:"200px",
@@ -175,7 +175,7 @@ export default class Profile extends Component {
         </div>
         
        
-        <Button type="submit" id="sendButton" variant="contained" color="primary" style={{margin:"1em"}}>
+        <Button type="submit" id="sendButton" variant="contained" color="secondary" style={{margin:"1em"}}>
             Actualizar perfil
         </Button>
         </form>

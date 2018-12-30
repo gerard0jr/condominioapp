@@ -22,7 +22,6 @@ router.get('/logout', (req,res,next) => {
 })
 
 router.post('/update', (req,res,next) => {
-  console.log(req.body)
   User.findByIdAndUpdate(req.body._id,{$set:req.body}, {new: true})
   .then(user => res.status(201).json(user))
   .catch(err => res.status(500).json(err))

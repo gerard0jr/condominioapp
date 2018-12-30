@@ -73,8 +73,10 @@ app.locals.title = 'Cóndomin';
 
 const index = require('./routes/index');
 const auth = require('./routes/auth')
+const db = require('./routes/db')
 
 app.use('/auth', auth)
+app.use('/db', db)
 app.use('/', index);
 
 

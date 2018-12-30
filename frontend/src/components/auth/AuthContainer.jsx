@@ -35,7 +35,7 @@ export default class AuthContainer extends Component {
       </div>
     )
     return (
-      <div style={{marginBottom:"4em"}}>
+      <div className="navMargin">
         <AppBar position="Fixed">
             <Toolbar>
             <IconButton onClick={this.toggleDrawer('left', true)}
@@ -57,9 +57,16 @@ export default class AuthContainer extends Component {
             </div>
             </Drawer>
             <Typography variant="h6" color="inherit" style={{flexGrow: 1}}>
-                CONDOMI
+
             </Typography>
             {/* PHOTO */}
+            <Link to="/auth/login" style={{textDecoration:"none"}}>
+              <Button type="submit" id="sendButton" variant="contained" color="secondary" style={{margin:"0.5em", padding:"2px 16px"}}>
+                <div style={{display:"flex", flexWrap:"wrap", alignItems:"center"}}>
+                  Ingresar
+                </div>
+              </Button>
+            </Link>
             </Toolbar>
         </AppBar>
         

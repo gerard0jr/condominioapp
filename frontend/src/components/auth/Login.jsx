@@ -66,8 +66,44 @@ export default class Login extends Component {
       const { handleChange, handleSubmit, checkEmail, handleClose } = this
       const { user, disabled, error, open, message } = this.state
     return (
-      <div>
-          <h2>Inicia sesión</h2>
+      <div style={{marginBottom:"1em"}}>
+        <div style={{
+        width:"100vw",
+        height:"40vh",
+        position: "relative"
+        }}>
+          <div style={{
+              width:"100%",
+              height:"100%",
+              backgroundColor:"rgba(0,0,0,0.15)",
+              position: "absolute",
+              top:"0",
+              left:"0"
+          }}></div>
+          <div style={{
+              backgroundImage:'url(/loginBanner2.jpg)',
+              backgroundSize:"cover",
+              backgroundRepeat:"no-repeat",
+              backgroundPosition:"center",
+              width:"100%",
+              height:"100%"
+              }}>
+          </div>
+          <div style={{
+              textAlign: "center",
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              color: "white",
+              fontWeight: "bold",
+              fontSize: "1.5em",
+              fontFamily: "Roboto",
+              textShadow: "1px 1px 4px #000"
+          }}><h2>¡Hola!</h2><h2> Ingresa a Querido Vecino</h2>
+          </div>
+        </div>
+        <h3>Ingresa tus datos</h3>
         <form onSubmit={handleSubmit}>
         {/* EMAIL */}
         <div>
@@ -106,9 +142,17 @@ export default class Login extends Component {
             />
         </div>
        
-        <Button type="submit" id="sendButton" disabled={disabled} variant="contained" color="primary" style={{margin:"1em"}}>
+        <Button type="submit" id="sendButton" disabled={disabled} variant="contained" color="secondary" style={{margin:"1em"}}>
             Iniciar sesión
         </Button>
+        <div>
+          <Button id="googleButton" color="secondary" style={{backgroundColor:"#34a853", margin:"1em", color:"white"}}>
+            Inicia sesión con Google
+          </Button>
+        </div>
+        <div>
+          <small>¿No tienes cuenta? <Link style={{textDecoration:"none"}} to="/auth/signup">Crea una aquí</Link> </small> 
+        </div>
         </form>
 
         <Snackbar

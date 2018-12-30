@@ -2,25 +2,29 @@ import React, { Component } from 'react'
 
 import { Link } from 'react-router-dom'
 import { logout } from '../../services/auth.js'
+import { getResidence } from '../../services/database'
 
 import {AppBar, Toolbar, Typography, Button, IconButton, 
   Drawer, List, Divider, ListItem, ListItemIcon, ListItemText, Snackbar} from '@material-ui/core';
-import {Menu, ChevronLeft, ChevronRight, Home, Close} from '@material-ui/icons';
-
-import Profile from './Profile'
+import {Menu, ChevronLeft, ChevronRight, Home, Close, RemoveCircle} from '@material-ui/icons';
 
 export default class HomeComponent extends Component {
   state = {
     left: false,
     user: {},
     open: false,
-    message:""
+    message:"",
+    residence: ""
   }
   
   componentDidMount(){
     const user = JSON.parse(localStorage.getItem('user'));
     if (!user) return this.props.history.push('/auth/login')
-    if (this.props.history.goBack.length === 0) this.setState({ open: true, message: "Bienvenido" })
+    getResidence(user.residence)
+    .then(residence => this.setState({residence}))
+    .catch(err => console.log(err))
+
+    if (this.props.history.goBack.length === 0) this.setState({ open: true, message: `Bienvenido ${user.name}` })
     return this.setState({ user, isAuth: true });
     
 }
@@ -29,7 +33,7 @@ export default class HomeComponent extends Component {
       logout()
       .then(res => {
         localStorage.removeItem('user')
-          this.props.history.push('/')
+          this.props.history.push('/auth/login')
 				
       })
       .catch(err => console.log(err))
@@ -48,7 +52,7 @@ export default class HomeComponent extends Component {
   }
   
   render() {
-    const { left, open, message, user } = this.state
+    const { left, open, message, user, residence } = this.state
     const { logout, handleClose } = this
     const sideList = (
       <div style={{width: 250}}>
@@ -61,9 +65,9 @@ export default class HomeComponent extends Component {
               <ListItemText primary="Inicio" />
             </ListItem>
           </Link>
-          
+          <Divider/>
           <ListItem onClick={logout} button >
-            <ListItemIcon><Home/></ListItemIcon>
+            <ListItemIcon><RemoveCircle/></ListItemIcon>
             <ListItemText primary="Logout" />
           </ListItem>
 
@@ -71,7 +75,7 @@ export default class HomeComponent extends Component {
       </div>
     )
     return (
-      <div style={{marginBottom:"4em"}}>
+      <div className="navMargin">
         <AppBar position="Fixed" style={{color:"white"}}>
             <Toolbar>
             <IconButton onClick={this.toggleDrawer('left', true)}
@@ -92,21 +96,24 @@ export default class HomeComponent extends Component {
                 {sideList}
             </div>
             </Drawer>
+            <h2>QueridoVecino</h2>
             <Typography variant="h6" color="inherit" style={{flexGrow: 1}}>
-                CONDOMI
+                {residence.name}, {residence.number}
             </Typography>
             {/* PHOTO */}
-            <div style={{display:"flex", flexWrap:"wrap", alignItems:"center"}}>
-              <p>{user.role}</p>
-              <Link to="/app/profile">
-                <img style={{
-                  width:"40px",
-                  height:"40px",
-                  borderRadius:"50%",
-                  marginLeft:"10px"
-                }} src={user.photoURL} alt={user.name}/>
-              </Link>
-            </div>
+            <Link to="/app/profile" style={{textDecoration:"none"}}>
+              <Button type="submit" id="sendButton" variant="contained" color="secondary" style={{margin:"0.5em", padding:"2px 16px"}}>
+                <div style={{display:"flex", flexWrap:"wrap", alignItems:"center"}}>
+                  <p>{user.role}</p>
+                    <img style={{
+                      width:"40px",
+                      height:"40px",
+                      borderRadius:"50%",
+                      marginLeft:"10px"
+                    }} src={user.photoURL} alt={user.name}/>
+                </div>
+              </Button>
+            </Link>
             </Toolbar>
         </AppBar>
         <Snackbar
