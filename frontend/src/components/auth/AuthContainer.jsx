@@ -35,7 +35,7 @@ export default class AuthContainer extends Component {
       </div>
     )
     return (
-      <div style={{marginBottom:"6em"}}>
+      <div style={{marginBottom:"4em"}}>
         <AppBar position="Fixed">
             <Toolbar>
             <IconButton onClick={this.toggleDrawer('left', true)}

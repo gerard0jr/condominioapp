@@ -71,8 +71,8 @@ export default class HomeComponent extends Component {
       </div>
     )
     return (
-      <div style={{marginBottom:"6em"}}>
-        <AppBar position="Fixed">
+      <div style={{marginBottom:"4em"}}>
+        <AppBar position="Fixed" style={{color:"white"}}>
             <Toolbar>
             <IconButton onClick={this.toggleDrawer('left', true)}
                 style={{ marginLeft: -12, marginRight: 20,}} 
@@ -110,6 +110,7 @@ export default class HomeComponent extends Component {
             </Toolbar>
         </AppBar>
         <Snackbar
+          color="secondary"
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'left',

@@ -9,10 +9,10 @@ class App extends Component {
     const theme = createMuiTheme({
       palette: {
         primary: {
-          main: '#1a237e',
+          main: '#e9c750',
         },
         secondary: {
-          main: '#0d47a1',
+          main: '#1890ff',
         }
       }
     })
@@ -27,3 +27,5 @@ class App extends Component {
 }
 
 export default App;
+
+//rgb(116, 39, 172)
