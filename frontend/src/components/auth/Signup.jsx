@@ -185,25 +185,10 @@ export default class Signup extends Component {
         <div>
             <TextField
             required
-            id="home"
-            label="Departamento/No. Interior"
-            type="text"
-            onChange={handleChange('home')}
-            style={{
-                marginLeft: 0,
-                marginRight: 0,
-                width: 200
-            }}
-            value={user.home}
-            margin="normal"
-            />
-        </div>
-        <div>
-            <TextField
             InputLabelProps={{ shrink: true }}
             id="Residence"
             select
-            label="Condominio"
+            label="Habitacional/Fracc."
             onChange={handleChange('residence')}
             style={{
                 marginLeft: 0,
@@ -215,10 +200,26 @@ export default class Signup extends Component {
             >
                 {residences.map((residence, key) => (
                     <MenuItem key={key} value={residence._id}>
-                    {residence.name}
+                    {residence.residenceName}
                     </MenuItem>
                 ))}
             </TextField>
+        </div>
+        <div>
+            <TextField
+            required
+            id="home"
+            label="Interior"
+            type="text"
+            onChange={handleChange('home')}
+            style={{
+                marginLeft: 0,
+                marginRight: 0,
+                width: 200
+            }}
+            value={user.home}
+            margin="normal"
+            />
         </div>
         {/* JOB */}
         <div>
@@ -248,6 +249,9 @@ export default class Signup extends Component {
             Crear
         </Button>
         </form>
+        <small>¿Tu unidad habitacional/ fraccionamiento no aparece en a lista? <Link style={{
+            textDecoration: "none"
+        }} to="/auth/add-residence">Agrégalo aquí</Link> </small>
         <Snackbar
           color="secondary"
           anchorOrigin={{
@@ -279,6 +283,10 @@ export default class Signup extends Component {
 
 const jobs = [
     {
+        value: "none",
+        label: "Ninguno"
+    },
+    {
         value: "plomero",
         label: "Plomero"
     },
@@ -309,5 +317,5 @@ const jobs = [
     {
         value: "contador",
         label: "Contador"
-    }
+    }    
 ]

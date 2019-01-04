@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Link }  from 'react-router-dom'
 import { update } from '../../services/auth'
+import { getResidences } from '../../services/database'
 import { TextField, Button, MenuItem, Snackbar, IconButton, CircularProgress} from '@material-ui/core'
 import {Close} from '@material-ui/icons'
 import firebase from '../../services/firebase'
@@ -13,10 +14,14 @@ export default class Profile extends Component {
         user: {},
         open: false,
         message:"",
-        progress:0
+        progress:0,
+        residences:[]
     }
     
     componentDidMount = () => {
+        getResidences()
+        .then(residences => this.setState({residences}))
+        .catch(e => console.log(e))
         const user = JSON.parse(localStorage.getItem('user'));
         if (!user) return this.props.history.push('/auth/login')
         return this.setState({ user, isAuth: true });
@@ -76,9 +81,10 @@ export default class Profile extends Component {
         document.getElementById('photoUpload').click()
       }
 
+
   render() {
       const { handleChange, handleSubmit, handleClose, uploadPhoto, clickInput } = this
-      const { user, error, open, message, progress } = this.state
+      const { user, error, open, message, progress, residences } = this.state
     return (
       <div style={{marginTop:"6em"}}>
           <img onClick={clickInput} style={{
@@ -137,7 +143,7 @@ export default class Profile extends Component {
             InputLabelProps={{ shrink: true }}
             required
             id="home"
-            label="Departamento/No. Interior"
+            label="Interior"
             type="text"
             onChange={handleChange('home')}
             style={{
@@ -149,13 +155,36 @@ export default class Profile extends Component {
             margin="normal"
             />
         </div>
+        <div>
+            <TextField
+            required
+            InputLabelProps={{ shrink: true }}
+            id="Residence"
+            select
+            label="Habitacional/Fracc."
+            onChange={handleChange('residence')}
+            style={{
+                marginLeft: 0,
+                marginRight: 0,
+                width: 200
+            }}
+            value={user.residence}
+            margin="normal"
+            >
+                {residences.map((residence, key) => (
+                    <MenuItem key={key} value={residence._id}>
+                    {residence.residenceName}
+                    </MenuItem>
+                ))}
+            </TextField>
+        </div>
         {/* JOB */}
         <div>
             <TextField
             InputLabelProps={{ shrink: true }}
             id="Job"
             select
-            label="Profesión (Opcional)"
+            label="Profesión/Oficio (Opcional)"
             onChange={handleChange('job')}
             style={{
                 marginLeft: 0,
@@ -178,6 +207,13 @@ export default class Profile extends Component {
         <Button type="submit" id="sendButton" variant="contained" color="secondary" style={{margin:"1em"}}>
             Actualizar perfil
         </Button>
+        <Link style={{
+            textDecoration:"none"
+        }} to="/app">
+            <Button type="submit" id="sendButton" variant="contained" color="primary" style={{margin:"1em", backgroundColor:"#9e61fc"}}>
+                Ir a página principal
+            </Button>
+        </Link>
         </form>
         <Snackbar
           anchorOrigin={{

@@ -12,6 +12,7 @@ export default class HomeComponent extends Component {
   state = {
     left: false,
     user: {},
+    thisUser: JSON.parse(localStorage.user),
     open: false,
     message:"",
     residence: ""
@@ -52,7 +53,7 @@ export default class HomeComponent extends Component {
   }
   
   render() {
-    const { left, open, message, user, residence } = this.state
+    const { left, open, message, thisUser, residence } = this.state
     const { logout, handleClose } = this
     const sideList = (
       <div style={{width: 250}}>
@@ -96,21 +97,23 @@ export default class HomeComponent extends Component {
                 {sideList}
             </div>
             </Drawer>
-            <h2>QueridoVecino</h2>
-            <Typography variant="h6" color="inherit" style={{flexGrow: 1}}>
-                {residence.name}, {residence.number}
-            </Typography>
+            <h2 className="logoCenterMargin">QueridoVecino</h2>
+            <div className="navCenterMargin">
+              <Typography variant="h6" color="inherit">
+                  {residence.residenceName}, {residence.number}
+              </Typography>
+            </div>
             {/* PHOTO */}
             <Link to="/app/profile" style={{textDecoration:"none"}}>
               <Button type="submit" id="sendButton" variant="contained" color="secondary" style={{margin:"0.5em", padding:"2px 16px"}}>
                 <div style={{display:"flex", flexWrap:"wrap", alignItems:"center"}}>
-                  <p>{user.role}</p>
+                  <p>{thisUser.role}</p>
                     <img style={{
                       width:"40px",
                       height:"40px",
                       borderRadius:"50%",
                       marginLeft:"10px"
-                    }} src={user.photoURL} alt={user.name}/>
+                    }} src={thisUser.photoURL} alt={thisUser.name}/>
                 </div>
               </Button>
             </Link>

@@ -40,3 +40,34 @@
     transform: rotate(360deg);
   }
 }
+
+.navCenterMargin{
+  flex-grow: 1;
+  margin-right: 3em;
+}
+
+.logoCenterMargin{
+  flex-grow: 0;
+}
+
+@media(max-width: 700px){
+  .navCenterMargin{
+    display: none;
+  }
+
+  .logoCenterMargin{
+    flex-grow: 1;
+  }
+}
+
+.admin-main-columns{
+  display: flex;
+}
+
+.leftCol, .rightCol{
+  width: 50%;
+}
+
+.textField{
+  width: 80%;
+}

@@ -1,10 +1,20 @@
 const Schema = require('mongoose').Schema
 
 const residenceSchema = new Schema({
-  name: String,
+  residenceName: String,
   street: String,
   number: Number,
-  remainAddress: String
+  remainAddress: String,
+  income: {
+    type: Number,
+    default: 0
+  },
+  outcome: {
+    type: Number,
+    default: 0
+  },
+  incomeDetail: Array,
+  outcomeDetail: Array
 },{
   timestamps: {
     createdAt: true,
