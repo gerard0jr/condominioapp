@@ -50,14 +50,8 @@
   flex-grow: 0;
 }
 
-@media(max-width: 700px){
-  .navCenterMargin{
-    display: none;
-  }
-
-  .logoCenterMargin{
-    flex-grow: 1;
-  }
+.buttonNav{
+  text-decoration: none;
 }
 
 .admin-main-columns{
@@ -71,3 +65,32 @@
 .textField{
   width: 80%;
 }
+
+@media(max-width: 700px){
+  .navCenterMargin{
+    display: none;
+  }
+
+  .logoCenterMargin{
+    flex-grow: 1;
+  }
+  
+  .buttonNav{
+    width: 100%;
+    text-align: right;
+  }
+
+  .leftCol, .rightCol{
+    width: 100%;
+    margin-bottom: 2em;
+    margin-bottom: 5em;
+    margin-top: 3em;
+  }
+
+  .admin-main-columns{
+    display: block;
+  }
+}
+
+
+

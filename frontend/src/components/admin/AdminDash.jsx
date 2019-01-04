@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { getResidence, updateData } from '../../services/database'
-import { Input, Button, Snackbar, IconButton, InputAdornment, FormControl, InputLabel } from '@material-ui/core'
+import { Input, Button, Snackbar, IconButton, InputAdornment, FormControl, InputLabel, TextField } from '@material-ui/core'
 import { Close } from '@material-ui/icons';
 
 export default class AdminDash extends Component {
@@ -27,10 +27,22 @@ export default class AdminDash extends Component {
 
     handleChange = input => event => {
         const { residence } = this.state
-        residence[input] = parseInt(event.target.value)
-        this.setState({
-          residence
-        })
+        if(input === "incomeConcept" || input === "incomeValue"){
+            let incomeInput = {
+                concept: input,
+                amount: event.target.value
+            }
+            residence.incomeDetail = incomeInput
+            this.setState({residence})
+        } 
+        if(input === "outcomeConcept" || input === "outcomeValue"){
+            let outcomeInput = {
+                concept: input,
+                amount: event.target.value
+            }
+            residence.outcomeDetail = outcomeInput
+            this.setState({residence})
+        } 
       }
 
     handleSubmit = (e) => {
@@ -69,6 +81,40 @@ export default class AdminDash extends Component {
                             startAdornment={<InputAdornment position="start">$</InputAdornment>}
                         />
                     </FormControl>
+                    <h3>Añadir concepto de ingreso</h3>
+                    <div style={{alignItems: "baseline", display: "flex", justifyContent:"center"}} >
+                        <TextField
+                        required
+                        id="concept"
+                        label="Concepto"
+                        placeholder="Cobro de mantenimiento"
+                        onChange={handleChange('incomeConcept')}
+                        style={{
+                            marginLeft: 0,
+                            marginRight: 0,
+                            width: "48%"
+                        }}
+                        margin="normal"
+                        />
+                        <TextField
+                        required
+                        id="amount"
+                        type="number"
+                        label="Monto"
+                        placeholder="6000"
+                        onChange={handleChange('incomeValue')}
+                        style={{
+                            marginLeft: "1em",
+                            marginRight: 0,
+                            width: "15%"
+                        }}
+                        margin="normal"
+                        />
+                        <Button type="submit" id="sendButton" variant="contained" color="secondary" 
+                        style={{margin:"5px", minWidth: "36px"}}>
+                            +
+                        </Button>
+                    </div>
                 </div>
                 <div id="egresos" className="rightCol">
                     <h2>Egresos</h2>
@@ -82,11 +128,42 @@ export default class AdminDash extends Component {
                             startAdornment={<InputAdornment position="start">$</InputAdornment>}
                         />
                     </FormControl>
+                    <h3>Añadir concepto de egreso</h3>
+                    <div style={{alignItems: "baseline", display: "flex", justifyContent:"center"}} >
+                        <TextField
+                        required
+                        id="conceptO"
+                        label="Concepto"
+                        placeholder="Reparación de bomba de agua"
+                        onChange={handleChange('outcomeConcept')}
+                        style={{
+                            marginLeft: 0,
+                            marginRight: 0,
+                            width: "48%"
+                        }}
+                        margin="normal"
+                        />
+                        <TextField
+                        required
+                        id="amountO"
+                        type="number"
+                        label="Monto"
+                        placeholder="3500"
+                        onChange={handleChange('outcomeValue')}
+                        style={{
+                            marginLeft: "1em",
+                            marginRight: 0,
+                            width: "15%"
+                        }}
+                        margin="normal"
+                        />
+                        <Button type="submit" id="sendButton" variant="contained" color="secondary" 
+                        style={{margin:"5px", minWidth: "36px"}}>
+                            +
+                        </Button>
+                    </div>
                 </div>
             </div>
-            <Button type="submit" id="sendButton" variant="contained" color="secondary" style={{margin:"1em"}}>
-                Guardar
-            </Button>
         </form>
         <Snackbar
           color="secondary"

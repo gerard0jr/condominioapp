@@ -31,7 +31,7 @@ export default class Login extends Component {
                 console.log('logueado')
                 localStorage.setItem('user', JSON.stringify(res))
                 this.setState({open: true, message: "Inicio de sesión correcto, ¡Bienvenido(a)!"})
-                this.props.history.push('/app/profile')
+                this.props.history.push('/app')
             }
             return this.setState({open: true, message: "Nombre de usuario o contraseña incorrectos"})
             

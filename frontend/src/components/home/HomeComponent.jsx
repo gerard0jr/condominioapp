@@ -97,14 +97,14 @@ export default class HomeComponent extends Component {
                 {sideList}
             </div>
             </Drawer>
-            <h2 className="logoCenterMargin">QueridoVecino</h2>
+            <img style={{width:"150px"}} src="/logo.png" alt="Logo"/>
             <div className="navCenterMargin">
               <Typography variant="h6" color="inherit">
                   {residence.residenceName}, {residence.number}
               </Typography>
             </div>
             {/* PHOTO */}
-            <Link to="/app/profile" style={{textDecoration:"none"}}>
+            <Link to="/app/profile" className="buttonNav">
               <Button type="submit" id="sendButton" variant="contained" color="secondary" style={{margin:"0.5em", padding:"2px 16px"}}>
                 <div style={{display:"flex", flexWrap:"wrap", alignItems:"center"}}>
                   <p>{thisUser.role}</p>
