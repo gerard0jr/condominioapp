@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { getResidence, updateData } from '../../services/database'
+import { getResidence, updateIncome, updateOutcome } from '../../services/database'
 import { Input, Button, Snackbar, IconButton, InputAdornment, FormControl, InputLabel, TextField } from '@material-ui/core'
 import { Close } from '@material-ui/icons';
 import IncomeTable from './IncomeTable';
@@ -7,10 +7,17 @@ import OutcomeTable from './OutcomeTable';
 
 export default class AdminDash extends Component {
     state = {
-        residence: {},
+        residence: {
+        },
         open: false,
-        message: ""
+        message: "",
+        incomeObject: {},
+        outcomeObject: {},
+        page: 0,
+        page2: 0,
+        rowsPerPage: 5
     }
+
     componentDidMount = () => {
         const user = JSON.parse(localStorage.getItem('user'));
         if (!user) return this.props.history.push('/auth/login')
@@ -27,33 +34,10 @@ export default class AdminDash extends Component {
         this.setState({ open: false });
     };
 
-    handleChange = input => event => {
-        const { residence } = this.state
-
-        if(input === "incomeConcept"){
-            residence.incomeDetail["concept"] = event.target.value
-            this.setState({residence})
-        } 
-
-        if(input === "incomeValue"){
-            residence.incomeDetail["value"] = event.target.value
-            this.setState({residence})
-        }
-
-        if(input === "outcomeConcept"){
-            residence.outcomeDetail["concept"] = event.target.value
-            this.setState({residence})
-        }
-        if(input === "outcomeValue"){
-            residence.outcomeDetail["value"] = event.target.value
-            this.setState({residence})
-        } 
-      }
-
-    handleSubmit = (e) => {
-    const { residence } = this.state
+    handleIncomeSubmit = e => {
+    const { residence, incomeObject } = this.state
     e.preventDefault()
-    updateData(residence._id, residence)
+    updateIncome(residence._id, incomeObject)
     .then(res => {
         if(res.status === 500){
             return this.setState({open: true, message: res.data.message})
@@ -64,10 +48,53 @@ export default class AdminDash extends Component {
     .catch(err => console.log(err))
     }
 
+    handleOutcomeSubmit = e => {
+        const { residence, outcomeObject } = this.state
+        e.preventDefault()
+        updateOutcome(residence._id, outcomeObject)
+        .then(res => {
+            if(res.status === 500){
+                return this.setState({open: true, message: res.data.message})
+            }
+    
+            this.setState({open: true, message: "Se ha guardado correctamente", residence: res})
+        })
+        .catch(err => console.log(err))
+        }
+
+    //Hacer un post para outcomeDetail, y una nueva funcion para outcomeDetail en database.js
+    handleIncomeChange = e => {
+        let {incomeObject} = this.state
+        let name = e.target.name
+        let value = e.target.value
+        incomeObject[name] = value
+        this.setState({incomeObject}, ()=>console.log(this.state))
+    }
+
+    handleOutcomeChange = e => {
+        let {outcomeObject} = this.state
+        let name = e.target.name
+        let value = e.target.value
+        outcomeObject[name] = value
+        this.setState({outcomeObject}, ()=>console.log(this.state))
+    }
+
+    handleChangePage = (event, page) => {
+        this.setState({ page })
+    }
+
+    handleChangePage2 = (event, page2) => {
+        this.setState({ page2 })
+    }
+
+    handleChangeRowsPerPage = event => {
+        this.setState({ rowsPerPage: event.target.value })
+    }
+
   render() {
-    const { residence, open, message } = this.state
-    const { handleChange, handleClose, handleSubmit } = this
-    console.log(residence)
+    const { residence, open, message, page, page2,rowsPerPage } = this.state
+    const { handleIncomeChange, handleOutcomeChange, handleClose, handleIncomeSubmit, handleOutcomeSubmit,
+            handleChangePage, handleChangePage2, handleChangeRowsPerPage } = this
     return (
       <div style={{
           marginTop:"6em"
@@ -76,25 +103,16 @@ export default class AdminDash extends Component {
             <div className="admin-main-columns">
                 <div id="ingresos" className="leftCol">
                     <h2>Ingresos</h2>
-                    <form onSubmit={handleSubmit}>
-                        <FormControl style={{width:"80%"}}>
-                            <InputLabel htmlFor="adornment-amount">Ingresos totales</InputLabel>
-                            <Input
-                                type="number"
-                                id="adornment-amount"
-                                value={residence.income}
-                                onChange={handleChange('income')}
-                                startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                            />
-                        </FormControl>
+                    <form onSubmit={handleIncomeSubmit}>
                         <h3>Añadir concepto de ingreso</h3>
                         <div style={{alignItems: "baseline", display: "flex", justifyContent:"center"}} >
                             <TextField
+                            name="incomeConcept"
                             required
                             id="concept"
                             label="Concepto"
                             placeholder="Cobro de mantenimiento"
-                            onChange={handleChange('incomeConcept')}
+                            onChange={handleIncomeChange}
                             style={{
                                 marginLeft: 0,
                                 marginRight: 0,
@@ -103,12 +121,13 @@ export default class AdminDash extends Component {
                             margin="normal"
                             />
                             <TextField
+                            name="incomeValue"
                             required
                             id="amount"
                             type="number"
                             label="Monto"
                             placeholder="6000"
-                            onChange={handleChange('incomeValue')}
+                            onChange={handleIncomeChange}
                             style={{
                                 marginLeft: "1em",
                                 marginRight: 0,
@@ -125,25 +144,16 @@ export default class AdminDash extends Component {
                 </div>
                 <div id="egresos" className="rightCol">
                     <h2>Egresos</h2>
-                    <form onSubmit={handleSubmit}>
-                        <FormControl style={{width:"80%"}}>
-                            <InputLabel htmlFor="adornment-amount">Egresos totales</InputLabel>
-                            <Input
-                                type="number"
-                                id="adornment-amount"
-                                value={residence.outcome}
-                                onChange={handleChange('outcome')}
-                                startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                            />
-                        </FormControl>
+                    <form onSubmit={handleOutcomeSubmit}>
                         <h3>Añadir concepto de egreso</h3>
                         <div style={{alignItems: "baseline", display: "flex", justifyContent:"center"}} >
                             <TextField
+                            name="outcomeConcept"
                             required
                             id="conceptO"
                             label="Concepto"
                             placeholder="Reparación de bomba de agua"
-                            onChange={handleChange('outcomeConcept')}
+                            onChange={handleOutcomeChange}
                             style={{
                                 marginLeft: 0,
                                 marginRight: 0,
@@ -152,12 +162,13 @@ export default class AdminDash extends Component {
                             margin="normal"
                             />
                             <TextField
+                            name="outcomeValue"
                             required
                             id="amountO"
                             type="number"
                             label="Monto"
                             placeholder="3500"
-                            onChange={handleChange('outcomeValue')}
+                            onChange={handleOutcomeChange}
                             style={{
                                 marginLeft: "1em",
                                 marginRight: 0,
@@ -175,12 +186,37 @@ export default class AdminDash extends Component {
             </div>
         <div className="tables">
             <div className="income-table">
-                <IncomeTable/>
+                <IncomeTable handleChangePage={handleChangePage} 
+                handleChangeRowsPerPage={handleChangeRowsPerPage} page={page} 
+                rowsPerPage={rowsPerPage} {...residence}/>
             </div>
             <div className="outcome-table">
-                <OutcomeTable/>
+                <OutcomeTable handleChangePage={handleChangePage2} 
+                handleChangeRowsPerPage={handleChangeRowsPerPage} page={page2} 
+                rowsPerPage={rowsPerPage} {...residence}/>
             </div>
+            
         </div>
+        <FormControl style={{width:"80%"}}>
+            <InputLabel htmlFor="adornment-amount">Ingresos totales</InputLabel>
+            <Input
+                disabled
+                type="number"
+                id="adornment-amount"
+                value={residence.income}
+                startAdornment={<InputAdornment position="start">$</InputAdornment>}
+            />
+        </FormControl>
+        <FormControl style={{width:"80%"}}>
+            <InputLabel htmlFor="adornment-amount">Egresos totales</InputLabel>
+            <Input
+                disabled
+                type="number"
+                id="adornment-amount"
+                value={residence.outcome}
+                startAdornment={<InputAdornment position="start">$</InputAdornment>}
+            />
+        </FormControl>
         <Snackbar
           color="secondary"
           anchorOrigin={{

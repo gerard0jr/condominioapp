@@ -13,8 +13,16 @@ export const getResidence = (id) => {
     .catch(err => err.response)
 }
 
-export const updateData = (id, data) => {
-    return axios.post(host + "newData/" + id, data, {})
+export const updateIncome = (id, data) => {
+    console.log(data)
+    return axios.post(host + "newIncome/" + id, data, {})
+    .then(res => res.data)
+    .catch(err => err.response)
+}
+
+export const updateOutcome = (id, data) => {
+    console.log(data)
+    return axios.post(host + "newOutcome/" + id, data, {})
     .then(res => res.data)
     .catch(err => err.response)
 }

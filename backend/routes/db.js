@@ -13,9 +13,18 @@ router.post('/new-residence', (req,res,next) => {
   .catch(err => res.status(500).json(err))
 })
 
-router.post('/newData/:id', (req,res,next) => {
+router.post('/newIncome/:id', (req,res,next) => {
   const { id } = req.params
-  Residence.findByIdAndUpdate(id, {$set: req.body}, {new: true})
+  console.log(req.body)
+  Residence.findByIdAndUpdate(id, {$push: {incomeDetail: req.body}}, {new: true})
+  .then(response => res.status(200).json(response))
+  .catch(err => res.status(500).json(err))
+})
+
+router.post('/newOutcome/:id', (req,res,next) => {
+  const { id } = req.params
+  console.log(req.body)
+  Residence.findByIdAndUpdate(id, {$push: {outcomeDetail: req.body}}, {new: true})
   .then(response => res.status(200).json(response))
   .catch(err => res.status(500).json(err))
 })
