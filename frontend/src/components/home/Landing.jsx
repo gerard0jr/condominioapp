@@ -20,7 +20,7 @@ export default class Landing extends Component {
     incomeDetails: [],
     outcomeDetails: [],
     totalIncome: 0,
-    totalOutcome: 0
+    totalOutcome: 0,
   }
   
   componentDidMount = () => {

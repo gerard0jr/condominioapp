@@ -4,7 +4,7 @@ import IncomeTable from '../admin/IncomeTable';
 import OutcomeTable from '../admin/OutcomeTable';
 import { Link } from 'react-router-dom'
 
-const Dashboard = ({residence, name,role,job,residenceName, income,outcome, handleChangePage, handleChangeRowsPerPage,
+const Dashboard = ({reports, residence, name,role,job,residenceName, income,outcome, handleChangePage, handleChangeRowsPerPage,
                     page, page2, rowsPerPage, rowsPerPage2, incomeDetails, outcomeDetails, handleChangePage2}) => {
   let dateObj = new Date();
   let month = dateObj.getUTCMonth() + 1;
@@ -70,12 +70,12 @@ const Dashboard = ({residence, name,role,job,residenceName, income,outcome, hand
               <div className="card-titles">
                 Reportes
               </div>
-              {income ? <div className="prices">
-                          <p>Fuga de agua</p>
-                        </div> : 
-                        <div>
-                          <p>Cargando datos... <CircularProgress/></p> 
-                        </div>}
+                {reports ? reports.map(report => <div>
+                  <p>{report.description}</p>
+                </div>) : 
+                <div>
+                  <p>Cargando datos... <CircularProgress/></p> 
+                </div>}
               <Link style={{textDecoration:"none"}} to="/app/addReport">
                 <Button variant="contained" color="secondary" style={{margin:"1em"}}>
                     Agregar reporte

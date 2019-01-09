@@ -14,7 +14,8 @@ const residenceSchema = new Schema({
     default: 0
   },
   incomeDetail: Array,
-  outcomeDetail: Array
+  outcomeDetail: Array,
+  reports: Array
 },{
   timestamps: {
     createdAt: true,
