@@ -26,9 +26,7 @@ export default class Login extends Component {
         e.preventDefault()
         login(user)
         .then(res => {
-            console.log(res)
             if(res.email){
-                console.log('logueado')
                 localStorage.setItem('user', JSON.stringify(res))
                 this.setState({open: true, message: "Inicio de sesión correcto, ¡Bienvenido(a)!"})
                 this.props.history.push('/app')

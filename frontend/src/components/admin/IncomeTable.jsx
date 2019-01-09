@@ -1,8 +1,8 @@
 import React from 'react'
-import { Table, TableBody, TableHead, TableCell, TableRow, Paper, Checkbox, TablePagination } from '@material-ui/core'
+import { Table, TableBody, TableHead, TableCell, TableRow, Paper, Checkbox, TablePagination, CircularProgress } from '@material-ui/core'
 const IncomeTable = ({incomeDetail, isSelected, rowsPerPage, page, handleChangePage, handleChangeRowsPerPage}) => {
   return (
-      <Paper style={{width:"80%", margin: "1em auto", padding:"1em"}}>
+      <Paper id="tablas" style={{width:"80%", margin: "1em auto", padding:"1em"}}>
       <h2 >Tabla de ingresos</h2>
       <Table>
         <TableHead>
@@ -14,14 +14,22 @@ const IncomeTable = ({incomeDetail, isSelected, rowsPerPage, page, handleChangeP
         <TableBody>
           {incomeDetail ? incomeDetail.map((concept, k) => {
             return (
-              (k < ((page * 5) + 5) && k >= (page * 5)) ? <TableRow key={k}>
-            <TableCell component="th" scope="row">
-                {concept.incomeConcept}
-            </TableCell>
-            <TableCell align="right">${concept.incomeValue}</TableCell>
-            </TableRow> : ""
+              (k < ((page * 5) + 5) && k >= (page * 5)) ? 
+              <TableRow key={k}>
+                <TableCell component="th" scope="row">
+                    {concept.incomeConcept}
+                </TableCell>
+                <TableCell align="right">${concept.incomeValue}</TableCell>
+              </TableRow> : ""
             );
-          }) : <p>Cargando...</p>}
+          }) : <TableRow>
+                <TableCell component="th" scope="row">
+                  Cargando datos
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  <CircularProgress color="secondary" style={{margin:"1em"}}/>
+                </TableCell>
+              </TableRow>}
         </TableBody>
       </Table>
       <TablePagination

@@ -13,22 +13,32 @@ export const getResidence = (id) => {
     .catch(err => err.response)
 }
 
-export const updateIncome = (id, data) => {
-    console.log(data)
-    return axios.post(host + "newIncome/" + id, data, {})
+export const updateIncome = (id, income) => {
+    return axios.post(host + "newIncome/" + id, income, {})
     .then(res => res.data)
     .catch(err => err.response)
 }
 
-export const updateOutcome = (id, data) => {
-    console.log(data)
-    return axios.post(host + "newOutcome/" + id, data, {})
+export const updateOutcome = (id, outcome) => {
+    return axios.post(host + "newOutcome/" + id, outcome, {})
     .then(res => res.data)
     .catch(err => err.response)
 }
 
 export const newResidence = (residence) => {
     return axios.post(host + "new-residence", residence, {})
+    .then(res => res.data)
+    .catch(err => err.response)
+}
+
+export const updateTotalIncome = (id,income) => {
+    return axios.post(host + "totalIncome/" + id, income, {} )
+    .then(res => res.data)
+    .catch(err => err.response)
+}
+
+export const updateTotalOutcome = (id,outcome) => {
+    return axios.post(host + "totalOutcome/" + id, outcome, {})
     .then(res => res.data)
     .catch(err => err.response)
 }

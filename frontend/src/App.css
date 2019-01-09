@@ -68,10 +68,110 @@
 
 .tables{
   display: flex;
+  flex-grow: 1;
 }
 
 .income-table, .outcome-table{
   width: 50vw;
+}
+
+.col1, .col2, .col3{
+  width: 33%;
+}
+
+.col1 img{
+  height: 150px;
+}
+
+.col1 h4{
+  font-family: Roboto;
+  font-weight: 400;
+  padding: 0 4em;
+}
+
+.financialData{
+  width: 100vw;
+  display: flex;
+  padding: 0 6em;
+  box-sizing: border-box;
+}
+
+.income-outcome{
+  width: 50vw;
+  position: relative;
+  padding: 2em;
+  margin: 0 auto;
+}
+
+.margin-tables{
+  margin: 1em 3em 0 -3em;
+}
+
+.margin-tables #tablas, .margin-tables #tablasO{
+  width: 100% !important;
+}
+
+.paper{
+  position: relative; 
+  padding: 3em 3em 1em;
+  min-width: 200px;
+  max-width: 220px;
+  margin-bottom: 3em;
+}
+
+.card-titles{
+  position: absolute;
+  padding: 1.5em;
+  top: -2em;
+  left: 2em;
+  z-index: 2;
+  background-color: rgb(255, 20, 147);
+  color: white;
+  font-weight: bold;
+  font-family: Roboto;
+  letter-spacing: 1px;
+}
+
+.prices p > p{
+  font-weight: bold;
+  font-size: 2em;
+}
+
+.photoNav{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-left:10px;
+}
+
+.imageLogo{
+  width:150px;
+}
+
+.drawer-button{
+  margin-left: -12px;
+  margin-right: 20px;
+}
+
+@media(max-width: 950px){
+  .income-outcome{
+    width: 50vw;
+  }
+  .financialData{
+    display: block;
+  }
+  .paper{
+    max-width: 100%;
+  }
+  .margin-tables {
+    margin: 0;
+  }
+}
+
+@media(max-width: 850px){
+  .col1{
+    width: 50vw;
+  }
 }
 
 @media(max-width: 700px){
@@ -105,5 +205,32 @@
 
   .income-table, .outcome-table{
     width: 100vw;
+  }
+
+  .col1, .col2, .col3{
+    width: 100vw;
+  }
+}
+
+@media(max-width:550px){
+  .financialData{
+    padding: 0 3em;
+  }
+  .margin-tables{
+    margin: 0 2em 0 0;
+  }
+
+  .income-outcome{
+    margin: 0;
+    padding: 0;
+  }
+}
+
+@media(max-width:450px){
+  .imageLogo{
+    width:120px;
+  }
+  .drawer-button{
+    margin-right: 0px;
   }
 }

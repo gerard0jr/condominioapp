@@ -6,7 +6,7 @@ import { getResidence } from '../../services/database'
 
 import {AppBar, Toolbar, Typography, Button, IconButton, 
   Drawer, List, Divider, ListItem, ListItemIcon, ListItemText, Snackbar} from '@material-ui/core';
-import {Menu, ChevronLeft, ChevronRight, Home, Close, RemoveCircle} from '@material-ui/icons';
+import {Menu, ChevronLeft, ChevronRight, Home, Close, RemoveCircle, InsertChart, ReportProblem} from '@material-ui/icons';
 
 export default class HomeComponent extends Component {
   state = {
@@ -66,6 +66,20 @@ export default class HomeComponent extends Component {
               <ListItemText primary="Inicio" />
             </ListItem>
           </Link>
+          <Link exact to="/app/admin" 
+            style={{textDecoration: "none"}}>
+            <ListItem button >
+              <ListItemIcon><InsertChart/></ListItemIcon>
+              <ListItemText primary="Administrador" />
+            </ListItem>
+          </Link>
+          <Link exact to="/app/addReport" 
+            style={{textDecoration: "none"}}>
+            <ListItem button >
+              <ListItemIcon><ReportProblem/></ListItemIcon>
+              <ListItemText primary="Agregar reporte" />
+            </ListItem>
+          </Link>
           <Divider/>
           <ListItem onClick={logout} button >
             <ListItemIcon><RemoveCircle/></ListItemIcon>
@@ -80,7 +94,7 @@ export default class HomeComponent extends Component {
         <AppBar position="Fixed" style={{color:"white"}}>
             <Toolbar>
             <IconButton onClick={this.toggleDrawer('left', true)}
-                style={{ marginLeft: -12, marginRight: 20,}} 
+                className="drawer-button" 
                 color="inherit" 
                 aria-label="Menu">
                 <Menu />
@@ -97,7 +111,7 @@ export default class HomeComponent extends Component {
                 {sideList}
             </div>
             </Drawer>
-            <img style={{width:"150px"}} src="/logo.png" alt="Logo"/>
+            <img className="imageLogo" src="/logo.png" alt="Logo"/>
             <div className="navCenterMargin">
               <Typography variant="h6" color="inherit">
                   {residence.residenceName}, {residence.number}
@@ -108,12 +122,7 @@ export default class HomeComponent extends Component {
               <Button type="submit" id="sendButton" variant="contained" color="secondary" style={{margin:"0.5em", padding:"2px 16px"}}>
                 <div style={{display:"flex", flexWrap:"wrap", alignItems:"center"}}>
                   <p>{thisUser.role}</p>
-                    <img style={{
-                      width:"40px",
-                      height:"40px",
-                      borderRadius:"50%",
-                      marginLeft:"10px"
-                    }} src={thisUser.photoURL} alt={thisUser.name}/>
+                    <img className="photoNav" src={thisUser.photoURL} alt={thisUser.name}/>
                 </div>
               </Button>
             </Link>

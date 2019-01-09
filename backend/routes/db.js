@@ -13,9 +13,23 @@ router.post('/new-residence', (req,res,next) => {
   .catch(err => res.status(500).json(err))
 })
 
-router.post('/newIncome/:id', (req,res,next) => {
+router.post('/totalIncome/:id', (req,res,next) => {
+  const { id } = req.params
+  Residence.findByIdAndUpdate(id, {$set: {income:Object.keys(req.body)[0]}}, {new: true})
+  .then(response => res.status(200).json(response))
+  .catch(err => res.status(500).json(err))
+})
+
+router.post('/totalOutcome/:id', (req,res,next) => {
   const { id } = req.params
   console.log(req.body)
+  Residence.findByIdAndUpdate(id, {$set: {outcome: Object.keys(req.body)[0]}}, {new: true})
+  .then(response => res.status(200).json(response))
+  .catch(err => res.status(500).json(err))
+})
+
+router.post('/newIncome/:id', (req,res,next) => {
+  const { id } = req.params
   Residence.findByIdAndUpdate(id, {$push: {incomeDetail: req.body}}, {new: true})
   .then(response => res.status(200).json(response))
   .catch(err => res.status(500).json(err))
@@ -23,7 +37,6 @@ router.post('/newIncome/:id', (req,res,next) => {
 
 router.post('/newOutcome/:id', (req,res,next) => {
   const { id } = req.params
-  console.log(req.body)
   Residence.findByIdAndUpdate(id, {$push: {outcomeDetail: req.body}}, {new: true})
   .then(response => res.status(200).json(response))
   .catch(err => res.status(500).json(err))

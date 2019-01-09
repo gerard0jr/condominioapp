@@ -1,8 +1,9 @@
 import React from 'react'
-import { Table, TableBody, TableHead, TableCell, TableRow, Paper, Checkbox, TablePagination } from '@material-ui/core'
-const OutcomeTable = ({outcomeDetail, isSelected, rowsPerPage, page2, handleChangePage, handleChangeRowsPerPage}) => {
-  return (
-      <Paper style={{width:"80%", margin: "1em auto", padding:"1em"}}>
+import { Table, TableBody, TableHead, TableCell, TableRow, Paper, Checkbox, TablePagination, CircularProgress } from '@material-ui/core'
+
+const OutcomeTable = ({outcomeDetail, isSelected, rowsPerPage2, page2, handleChangePage2, handleChangeRowsPerPage}) => {
+    return (
+      <Paper id="tablasO" style={{width:"80%", margin: "1em auto", padding:"1em"}}>
       <h2 >Tabla de egresos</h2>
       <Table>
         <TableHead>
@@ -21,14 +22,21 @@ const OutcomeTable = ({outcomeDetail, isSelected, rowsPerPage, page2, handleChan
             <TableCell align="right">${concept.outcomeValue}</TableCell>
             </TableRow> : ""
             );
-          }) : <p>Cargando...</p>}
+          }) : <TableRow>
+          <TableCell component="th" scope="row">
+            Cargando datos
+          </TableCell>
+          <TableCell component="th" scope="row">
+            <CircularProgress color="secondary" style={{margin:"1em"}}/>
+          </TableCell>
+        </TableRow>}
         </TableBody>
       </Table>
       <TablePagination
           rowsPerPageOptions={[5]}
           component="Table"
           count={outcomeDetail ? outcomeDetail.length : 0}
-          rowsPerPage={rowsPerPage}
+          rowsPerPage={rowsPerPage2}
           page={page2}
           backIconButtonProps={{
             'aria-label': 'Previous Page',
@@ -36,7 +44,7 @@ const OutcomeTable = ({outcomeDetail, isSelected, rowsPerPage, page2, handleChan
           nextIconButtonProps={{
             'aria-label': 'Next Page',
           }}
-          onChangePage={handleChangePage}
+          onChangePage={handleChangePage2}
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
     </Paper>
