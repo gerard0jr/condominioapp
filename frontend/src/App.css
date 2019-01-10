@@ -132,9 +132,10 @@
   letter-spacing: 1px;
 }
 
-.prices p > p{
+.prices-bold{
   font-weight: bold;
   font-size: 2em;
+  margin: 0 0 1.2em 0px;
 }
 
 .photoNav{
@@ -182,6 +183,12 @@
   }
   .margin-tables {
     margin: 0;
+  }
+}
+
+@media(max-width: 920px){
+  th,td{
+    padding: 4px 0px 4px 24px !important;
   }
 }
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Dashboard from './Dashboard';
-import { getResidence } from '../../services/database'
-import { IconButton, Snackbar, Chip } from '@material-ui/core';
+import { getResidence, deleteReport } from '../../services/database'
+import { IconButton, Snackbar, Chip, Dialog, DialogTitle, DialogActions, Button, DialogContent, DialogContentText } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 
 export default class Landing extends Component {
@@ -20,7 +20,11 @@ export default class Landing extends Component {
     incomeDetails: [],
     outcomeDetails: [],
     totalIncome: 0,
-    totalOutcome: 0
+    totalOutcome: 0,
+    detail: "",
+    openDialog: false,
+    openDialogInfo: false,
+    report: 0
   }
   
   componentDidMount = () => {
@@ -40,6 +44,14 @@ export default class Landing extends Component {
     this.setState({ open: false });
   }
 
+  closeDialog = (event, reason) => {
+    if (reason === 'clickaway') {
+        return;
+    }
+
+    this.setState({ openDialog: false, openDialogInfo: false });
+  }
+
   handleChangePage = (event, page) => {
     this.setState({ page })
   }
@@ -56,9 +68,27 @@ export default class Landing extends Component {
       this.setState({ rowsPerPage2: event.target.value })
   }
 
+  openDial = description => e => {
+    this.setState({openDialog: true, detail:description })
+  }
+
+  openDialInfo = (description, id) => e => {
+    this.setState({openDialogInfo: true, detail:description, report: id })
+  }
+
+  resolved =  e => {
+    const { residence, detail } = this.state
+    let deletedItem = {
+      "id": detail
+    }
+    deleteReport(residence._id,deletedItem)
+    .then(newResidence => this.setState({open: true, openDialog:false, message:"Reporte resuelto", residence: newResidence}))
+    .catch(err => console.log(err))
+  }
+
   render() {
-    const { user,residence, open, message, page, page2,rowsPerPage, rowsPerPage2, incomeDetails, outcomeDetails } = this.state
-    const { handleChangePage, handleChangePage2, handleChangeRowsPerPage, handleClose } = this
+    const { user,residence, open, message, page, page2,rowsPerPage, rowsPerPage2, incomeDetails, outcomeDetails, openDialog, openDialogInfo, report } = this.state
+    const { handleChangePage, handleChangePage2, handleChangeRowsPerPage, handleClose, resolved, closeDialog, openDial, openDialInfo } = this
     return (
       <div style={{backgroundColor:"#ececec", height:"100%"}}>
         <div style={{
@@ -106,7 +136,40 @@ export default class Landing extends Component {
                 handleChangeRowsPerPage={handleChangeRowsPerPage} page={page} 
                 rowsPerPage={rowsPerPage} incomeDetails={incomeDetails} 
                 handleChangePage2={handleChangePage2} page2={page2} 
-                rowsPerPage2={rowsPerPage2} outcomeDetails={outcomeDetails} residence={residence}/>
+                rowsPerPage2={rowsPerPage2} outcomeDetails={outcomeDetails} residence={residence}
+                openDial={openDial} openDialInfo={openDialInfo} />
+        <Dialog
+          open={openDialog}
+          onClose={closeDialog}
+          aria-labelledby="responsive-dialog-title"
+        >
+        <DialogTitle id="responsive-dialog-title">{"¿Se resolvió el reporte?"}</DialogTitle>
+          <DialogActions>
+            <Button onClick={closeDialog} color="primary">
+              No
+            </Button>
+            <Button onClick={resolved} color="primary" autoFocus>
+              Resuelto
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Dialog
+          open={openDialogInfo}
+          onClose={closeDialog}
+          aria-labelledby="responsive-dialog-title-view"
+        >
+        <DialogTitle id="responsive-dialog-title-view">{"Reporte"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+             {residence.reports ? residence.reports[report].description : ""}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={closeDialog} color="primary">
+              Regresar
+            </Button>
+          </DialogActions>
+        </Dialog>
         <Snackbar
           color="secondary"
           anchorOrigin={{

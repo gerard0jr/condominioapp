@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { getResidence, updateIncome, updateOutcome, updateTotalIncome, updateTotalOutcome } from '../../services/database'
+import { getResidence, updateIncome, updateOutcome, updateTotalIncome, 
+         updateTotalOutcome, deleteIncome, deleteOutcome } from '../../services/database'
 import { Button, Snackbar, IconButton, TextField, Paper, CircularProgress } from '@material-ui/core'
 import { Close } from '@material-ui/icons';
 import IncomeTable from './IncomeTable';
@@ -85,7 +86,52 @@ export default class AdminDash extends Component {
         .catch(err => console.log(err))
         }
 
-    //Hacer un post para outcomeDetail, y una nueva funcion para outcomeDetail en database.js
+    deleteIncomeItem = concept => (e) =>{
+        const { residence } = this.state
+        let deletedItem = {
+            "id": concept
+        }
+        deleteIncome(residence._id, deletedItem)
+        .then(newResidence => {
+            let income = 0
+            newResidence.incomeDetail.forEach(concept => {
+                income += Number(concept.incomeValue)
+            })
+            updateTotalIncome(residence._id, income)
+            .then(result => {
+                if(result.status === 500){
+                    return this.setState({open: true, message: result.data.message})
+                }
+                this.setState({open: true, message: "Se ha guardado correctamente", residence: result})
+            })
+            .catch(err => console.log(err))
+        })
+        .catch(err => console.log(err))
+    }
+
+    deleteOutcomeItem = concept => (e) =>{
+        const { residence } = this.state
+        let deletedItem = {
+            "id": concept
+        }
+        deleteOutcome(residence._id, deletedItem)
+        .then(newResidence => {
+            let outcome = 0
+            newResidence.outcomeDetail.forEach(concept => {
+                outcome += Number(concept.outcomeValue)
+            })
+            updateTotalOutcome(residence._id, outcome)
+            .then(result => {
+                if(result.status === 500){
+                    return this.setState({open: true, message: result.data.message})
+                }
+                this.setState({open: true, message: "Se ha guardado correctamente", residence: result})
+            })
+            .catch(err => console.log(err))
+        })
+        .catch(err => console.log(err))
+    }
+
     handleIncomeChange = e => {
         let {incomeObject} = this.state
         let name = e.target.name
@@ -121,7 +167,7 @@ export default class AdminDash extends Component {
   render() {
     const { residence, open, message, page, page2,rowsPerPage, rowsPerPage2, incomeDetails, outcomeDetails } = this.state
     const { handleIncomeChange, handleOutcomeChange, handleClose, handleIncomeSubmit, handleOutcomeSubmit,
-            handleChangePage, handleChangePage2, handleChangeRowsPerPage } = this
+            handleChangePage, handleChangePage2, handleChangeRowsPerPage, deleteIncomeItem, deleteOutcomeItem } = this
     return (
       <div style={{
           marginTop:"6em",
@@ -222,12 +268,14 @@ export default class AdminDash extends Component {
             <div className="income-table">
                 <IncomeTable handleChangePage={handleChangePage} 
                 handleChangeRowsPerPage={handleChangeRowsPerPage} page={page} 
-                rowsPerPage={rowsPerPage} {...residence} incomeDetails={incomeDetails}/>
+                rowsPerPage={rowsPerPage} {...residence} incomeDetails={incomeDetails} 
+                deleteIncomeItem={deleteIncomeItem}/>
             </div>
             <div className="outcome-table">
                 <OutcomeTable handleChangePage2={handleChangePage2} 
                 handleChangeRowsPerPage={handleChangeRowsPerPage} page2={page2} 
-                rowsPerPage2={rowsPerPage2} {...residence} outcomeDetails={outcomeDetails}/>
+                rowsPerPage2={rowsPerPage2} {...residence} outcomeDetails={outcomeDetails}
+                deleteOutcomeItem={deleteOutcomeItem}/>
             </div>
             
         </div>

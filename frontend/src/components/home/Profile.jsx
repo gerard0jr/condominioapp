@@ -58,7 +58,6 @@ export default class Profile extends Component {
       uploadPhoto = (e) => {
         const { user } = this.state
         const file = e.target.files[0]
-        console.log(file)
         const task = firebase.storage().ref('profilePics').child(user._id + file.name).put(file)
 
         task.on("state_changed", snap => {

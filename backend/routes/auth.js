@@ -18,7 +18,7 @@ router.post('/login', (req,res,next) => {
 
 router.get('/logout', (req,res,next) => {
   req.logout()
-  res.status(200).json({message: 'Succesfully logged out'})
+  return res.status(200).json({message: 'Succesfully logged out'})
 })
 
 router.post('/update', (req,res,next) => {

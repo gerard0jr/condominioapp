@@ -1,8 +1,6 @@
 import React from 'react'
 import { Table, TableBody, TableHead, TableCell, TableRow, Paper, TablePagination, CircularProgress } from '@material-ui/core'
-import { DeleteOutline } from '@material-ui/icons';
-const IncomeTable = ({incomeDetail, rowsPerPage, page, handleChangePage, 
-                    handleChangeRowsPerPage, deleteIncomeItem}) => {
+const IncomeTable = ({incomeDetail, rowsPerPage, page, handleChangePage, handleChangeRowsPerPage}) => {
   return (
       <Paper id="tablas" style={{width:"80%", margin: "1em auto", padding:"1em"}}>
       <h2 >Tabla de ingresos</h2>
@@ -11,7 +9,6 @@ const IncomeTable = ({incomeDetail, rowsPerPage, page, handleChangePage,
           <TableRow>
             <TableCell>Concepto</TableCell>
             <TableCell align="right">Valor</TableCell>
-            <TableCell align="right">Borrar</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -23,9 +20,6 @@ const IncomeTable = ({incomeDetail, rowsPerPage, page, handleChangePage,
                     {concept.incomeConcept}
                 </TableCell>
                 <TableCell align="right">${concept.incomeValue}</TableCell>
-                <TableCell onClick={deleteIncomeItem(`${concept.incomeConcept}`)} align="right">
-                  <DeleteOutline style={{fontSize: "17px", cursor:"pointer"}}/>
-                </TableCell>
               </TableRow> : ""
             );
           }) : <TableRow>

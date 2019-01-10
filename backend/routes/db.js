@@ -14,6 +14,30 @@ router.post('/newReport/:id', (req,res,next) => {
   .catch(err => res.status(500).json(err))
 })
 
+router.post('/delete-report/:id', (req,res,next) => {
+  const { id } = req.params
+  let string = String(req.body.id)
+  Residence.findByIdAndUpdate(id, {$pull:{reports: { description: string } }}, {new: true})
+  .then(response => res.status(201).json(response))
+  .catch(err => res.status(500).json(err))
+})
+
+router.post('/delete-income-value/:id', (req,res,next) => {
+  const { id } = req.params
+  let string = String(req.body.id)
+  Residence.findByIdAndUpdate(id, {$pull:{incomeDetail: { incomeConcept: string } }}, {new: true})
+  .then(response => res.status(201).json(response))
+  .catch(err => res.status(500).json(err))
+})
+
+router.post('/delete-outcome-value/:id', (req,res,next) => {
+  const { id } = req.params
+  let string = String(req.body.id)
+  Residence.findByIdAndUpdate(id, {$pull:{outcomeDetail: { outcomeConcept: string } }}, {new: true})
+  .then(response => res.status(201).json(response))
+  .catch(err => res.status(500).json(err))
+})
+
 router.post('/new-residence', (req,res,next) => {
   Residence.create(req.body)
   .then(response => res.status(201).json(response))

@@ -13,6 +13,24 @@ export const getResidence = (id) => {
     .catch(err => err.response)
 }
 
+export const deleteReport = (id, deletedItem) => {
+    return axios.post(host + "delete-report/" + id, deletedItem, {})
+    .then(res => res.data)
+    .catch(err => err.response)
+}
+
+export const deleteIncome = (id, deletedItem) => {
+    return axios.post(host + "delete-income-value/" + id, deletedItem, {})
+    .then(res => res.data)
+    .catch(err => err.response)
+}
+
+export const deleteOutcome = (id, deletedItem) => {
+    return axios.post(host + "delete-outcome-value/" + id, deletedItem, {})
+    .then(res => res.data)
+    .catch(err => err.response)
+}
+
 export const newReport = (id,report) => {
     return axios.post(host + "newReport/" + id, report, {})
     .then(res => res.data)

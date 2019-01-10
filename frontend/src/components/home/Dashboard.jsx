@@ -1,11 +1,12 @@
 import React, { Fragment } from 'react'
 import { Paper, CircularProgress, Button, List, ListItem, Avatar, ListItemText } from '@material-ui/core';
-import IncomeTable from '../admin/IncomeTable';
-import OutcomeTable from '../admin/OutcomeTable';
+import IncomeTableView from '../admin/IncomeTableView';
+import OutcomeTableView from '../admin/OutcomeTableView';
 import { Link } from 'react-router-dom'
+import { DeleteForever } from '@material-ui/icons';
 
 const Dashboard = ({reports, residence, name,role,job,residenceName, income,outcome, handleChangePage, handleChangeRowsPerPage,
-                    page, page2, rowsPerPage, rowsPerPage2, incomeDetails, outcomeDetails, handleChangePage2}) => {
+                    page, page2, rowsPerPage, rowsPerPage2, incomeDetails, outcomeDetails, handleChangePage2, openDial, openDialInfo}) => {
   let dateObj = new Date();
   let month = dateObj.getUTCMonth() + 1;
   switch(month){
@@ -58,8 +59,8 @@ const Dashboard = ({reports, residence, name,role,job,residenceName, income,outc
                 Datos financieros
               </div> 
               {income ? <div className="prices">
-                          <p>Ingresos totales: <p>${income}</p></p>
-                          <p>Egresos totales: <p>${outcome}</p></p>
+                          <p>Ingresos totales:</p><p className="prices-bold">${income}</p>
+                          <p>Egresos totales:</p><p className="prices-bold">${outcome}</p>
                           <div><small style={{color: "gray",fontStyle: "italic"}}>{month} {year}</small></div>
                         </div> : 
                         <div>
@@ -78,14 +79,20 @@ const Dashboard = ({reports, residence, name,role,job,residenceName, income,outc
                   
                   reports.map((report, id) => 
                         <Fragment key={id}>
-                          <ListItem button>
+                          {role === "Administrador" ? 
+                          <ListItem onClick={openDial(`${report.description}`)} button>
+                          <Avatar alt="Profile Picture" src={report.authorPhoto} />
+                            <ListItemText primary={report.authorName} secondary={report.description} />
+                            <small>{report.home}</small>
+                            <DeleteForever style={{marginLeft:"5px"}}/>
+                          </ListItem> :
+                           <ListItem onClick={openDialInfo(`${report.description}`, id)} button>
                             <Avatar alt="Profile Picture" src={report.authorPhoto} />
                             <ListItemText primary={report.authorName} secondary={report.description} />
                             <small>{report.home}</small>
-                          </ListItem>
+                          </ListItem>}
                         </Fragment>
                     ) 
-                  
                   : <div style={{margin:"1em 0"}}>No hay reportes</div> 
                   
                 }
@@ -99,12 +106,12 @@ const Dashboard = ({reports, residence, name,role,job,residenceName, income,outc
           </div>
             <div className="margin-tables">
               <div>
-                  <IncomeTable style={{width:"100%"}} handleChangePage={handleChangePage} 
+                  <IncomeTableView style={{width:"100%"}} handleChangePage={handleChangePage} 
                   handleChangeRowsPerPage={handleChangeRowsPerPage} page={page} 
                   rowsPerPage={rowsPerPage} {...residence} incomeDetails={incomeDetails}/>
               </div>
               <div>
-                  <OutcomeTable style={{width:"100%"}} handleChangePage2={handleChangePage2} 
+                  <OutcomeTableView style={{width:"100%"}} handleChangePage2={handleChangePage2} 
                   handleChangeRowsPerPage={handleChangeRowsPerPage} page2={page2} 
                   rowsPerPage2={rowsPerPage2} {...residence} outcomeDetails={outcomeDetails}/>
               </div>

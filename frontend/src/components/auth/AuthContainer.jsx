@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 import {AppBar, Toolbar, Typography, Button, IconButton, 
   Drawer, List, Divider, ListItem, ListItemIcon, ListItemText} from '@material-ui/core';
-import {Menu, ChevronLeft, ChevronRight, Home} from '@material-ui/icons';
+import {Menu, ChevronLeft, ChevronRight, Home, LockOpen, HowToReg} from '@material-ui/icons';
 
 export default class AuthContainer extends Component {
   state = {
@@ -23,11 +23,25 @@ export default class AuthContainer extends Component {
       <div style={{width: 250}}>
         <List>
 
-          <Link exact to="/auth/login" 
+          <Link exact to="/" 
             style={{textDecoration: "none"}}>
             <ListItem button >
               <ListItemIcon><Home/></ListItemIcon>
               <ListItemText primary="Inicio" />
+            </ListItem>
+          </Link>
+          <Link exact to="/auth/login" 
+            style={{textDecoration: "none"}}>
+            <ListItem button >
+              <ListItemIcon><LockOpen/></ListItemIcon>
+              <ListItemText primary="Inicia Sesión" />
+            </ListItem>
+          </Link>
+          <Link exact to="/auth/signup" 
+            style={{textDecoration: "none"}}>
+            <ListItem button >
+              <ListItemIcon><HowToReg/></ListItemIcon>
+              <ListItemText primary="Regístrate" />
             </ListItem>
           </Link>
 

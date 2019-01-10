@@ -1,9 +1,7 @@
 import React from 'react'
 import { Table, TableBody, TableHead, TableCell, TableRow, Paper, TablePagination, CircularProgress } from '@material-ui/core'
-import { DeleteOutline } from '@material-ui/icons';
 
-const OutcomeTable = ({outcomeDetail, isSelected, rowsPerPage2, page2, handleChangePage2, 
-                        handleChangeRowsPerPage, deleteOutcomeItem}) => {
+const OutcomeTable = ({outcomeDetail, rowsPerPage2, page2, handleChangePage2, handleChangeRowsPerPage}) => {
     return (
       <Paper id="tablasO" style={{width:"80%", margin: "1em auto", padding:"1em"}}>
       <h2 >Tabla de egresos</h2>
@@ -12,7 +10,6 @@ const OutcomeTable = ({outcomeDetail, isSelected, rowsPerPage2, page2, handleCha
           <TableRow>
             <TableCell>Concepto</TableCell>
             <TableCell align="right">Valor</TableCell>
-            <TableCell align="right">Borrar</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -23,9 +20,6 @@ const OutcomeTable = ({outcomeDetail, isSelected, rowsPerPage2, page2, handleCha
                 {concept.outcomeConcept}
             </TableCell>
             <TableCell align="right">${concept.outcomeValue}</TableCell>
-            <TableCell onClick={deleteOutcomeItem(`${concept.outcomeConcept}`)} align="right">
-              <DeleteOutline style={{fontSize: "17px", cursor:"pointer"}}/>
-            </TableCell>
             </TableRow> : ""
             );
           }) : <TableRow>

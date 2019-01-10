@@ -38,7 +38,6 @@ export default class Signup extends Component {
         e.preventDefault()
         signup(user)
         .then(res => {
-            console.log(res)
             if(res.status === 500){
                 return this.setState({open: true, message: res.data.message})
             }
@@ -59,7 +58,6 @@ export default class Signup extends Component {
 
     checkPassword = input => event => {
         const { user } = this.state
-        console.log(user.password, event.target.value)
         if(user.password === event.target.value) return this.setState({disabled: false})
         this.setState({ disabled: true})
     }
