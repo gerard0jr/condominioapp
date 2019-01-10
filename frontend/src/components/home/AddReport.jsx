@@ -50,8 +50,10 @@ export default class AddReport extends Component {
         let { user, report, reportWithDetails } = this.state
         report = event.target.value
         reportWithDetails = {
-            "author": user._id,
-            "description": event.target.value
+            "authorName": user.name,
+            "authorPhoto": user.photoURL,
+            "description": event.target.value,
+            "home": user.home
         }
         this.setState({
           report, reportWithDetails

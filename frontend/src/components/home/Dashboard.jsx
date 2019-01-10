@@ -1,5 +1,5 @@
-import React from 'react'
-import { Paper, CircularProgress, Button } from '@material-ui/core';
+import React, { Fragment } from 'react'
+import { Paper, CircularProgress, Button, List, ListItem, Avatar, ListItemText } from '@material-ui/core';
 import IncomeTable from '../admin/IncomeTable';
 import OutcomeTable from '../admin/OutcomeTable';
 import { Link } from 'react-router-dom'
@@ -66,16 +66,30 @@ const Dashboard = ({reports, residence, name,role,job,residenceName, income,outc
                           <p>Cargando datos... <CircularProgress/></p> 
                         </div>}
             </Paper>
-            <Paper className="paper">
+            <Paper className="paper" style={{maxWidth:"250px"}}>
               <div className="card-titles">
                 Reportes
               </div>
-                {reports ? reports.map(report => <div>
-                  <p>{report.description}</p>
-                </div>) : 
-                <div>
+              <List>
+                {
+                  reports === undefined ? <div>
                   <p>Cargando datos... <CircularProgress/></p> 
-                </div>}
+                  </div> : reports.length ? 
+                  
+                  reports.map((report, id) => 
+                        <Fragment key={id}>
+                          <ListItem button>
+                            <Avatar alt="Profile Picture" src={report.authorPhoto} />
+                            <ListItemText primary={report.authorName} secondary={report.description} />
+                            <small>{report.home}</small>
+                          </ListItem>
+                        </Fragment>
+                    ) 
+                  
+                  : <div style={{margin:"1em 0"}}>No hay reportes</div> 
+                  
+                }
+              </List>
               <Link style={{textDecoration:"none"}} to="/app/addReport">
                 <Button variant="contained" color="secondary" style={{margin:"1em"}}>
                     Agregar reporte

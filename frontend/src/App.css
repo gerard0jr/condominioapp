@@ -116,7 +116,7 @@
   padding: 3em 3em 1em;
   min-width: 200px;
   max-width: 220px;
-  margin-bottom: 3em;
+  margin-bottom: 5em;
 }
 
 .card-titles{
@@ -151,6 +151,23 @@
 .drawer-button{
   margin-left: -12px;
   margin-right: 20px;
+}
+
+.chipContainer{
+  text-align: center;
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  color: white;
+  font-weight: bold;
+  font-size: 2em;
+  font-family: Roboto;
+}
+
+.chipClass{
+  color: white !important;
+  background-color: #737373 !important;
 }
 
 @media(max-width: 950px){

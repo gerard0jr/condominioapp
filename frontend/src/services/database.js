@@ -12,11 +12,6 @@ export const getResidence = (id) => {
     .then(res => res.data)
     .catch(err => err.response)
 }
-export const getReports = () => {
-    return axios.get(host + "get-reports")
-    .then(res => res.data)
-    .catch(err => err.response)
-}
 
 export const newReport = (id,report) => {
     return axios.post(host + "newReport/" + id, report, {})

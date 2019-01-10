@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Dashboard from './Dashboard';
 import { getResidence } from '../../services/database'
-import { IconButton, Snackbar } from '@material-ui/core';
+import { IconButton, Snackbar, Chip } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 
 export default class Landing extends Component {
@@ -20,7 +20,7 @@ export default class Landing extends Component {
     incomeDetails: [],
     outcomeDetails: [],
     totalIncome: 0,
-    totalOutcome: 0,
+    totalOutcome: 0
   }
   
   componentDidMount = () => {
@@ -96,7 +96,12 @@ export default class Landing extends Component {
                 textShadow: "1px 1px 4px #000"
             }}><h2>{residence.residenceName}</h2>
             </div>
+            <div className="chipContainer">
+              <Chip className="chipClass"
+              label={residence.residenceName ? residence.street + " #" + residence.number + ", " + residence.remainAddress : "Dirección"} />
+            </div>
         </div>
+        
         <Dashboard {...user} {...residence} handleChangePage={handleChangePage} 
                 handleChangeRowsPerPage={handleChangeRowsPerPage} page={page} 
                 rowsPerPage={rowsPerPage} incomeDetails={incomeDetails} 

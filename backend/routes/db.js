@@ -7,12 +7,6 @@ const isAuth = (req,res,next) => {
   return res.status(403).json({message: 'User not logged in'})
 }
 
-router.get('/get-reports', (req,res,next) => {
-  Residence.find()
-  .then(response => res.status(200).json(response.reports))
-  .catch(err => res.status(500).json(err))
-})
-
 router.post('/newReport/:id', (req,res,next) => {
   const { id } = req.params
   Residence.findByIdAndUpdate(id, {$push: {reports: req.body}}, {new: true})
