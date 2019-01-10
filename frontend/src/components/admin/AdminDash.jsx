@@ -27,6 +27,7 @@ export default class AdminDash extends Component {
     componentDidMount = () => {
         const user = JSON.parse(localStorage.getItem('user'));
         if (!user) return this.props.history.push('/auth/login')
+        if(user.role === "Residente") return this.props.history.push('/app')
         getResidence(user.residence)
         .then(residence => {
             this.setState({residence})

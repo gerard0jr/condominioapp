@@ -171,6 +171,33 @@
   background-color: #737373 !important;
 }
 
+.demos{
+  text-align: left;
+  background-color: #f0f0f0;
+  display: flex;
+}
+
+.demos-darker{
+  text-align: left;
+  background-color: #ececec;
+  display: flex;
+}
+
+.demo-image, .demo-text{
+  width:50vw;
+  text-align: center;
+}
+
+.demo-text{
+  margin-top: 6em;
+}
+
+.demo-text-darker{
+  margin-top: 6em;
+  width:50vw;
+  text-align: center;
+}
+
 @media(max-width: 950px){
   .income-outcome{
     width: 50vw;
@@ -195,6 +222,31 @@
 @media(max-width: 850px){
   .col1{
     width: 50vw;
+  }
+  .demos{
+    display: block;
+  }
+  
+  .demo-image, .demo-text{
+    width:100vw;
+    text-align: center;
+  }
+
+  .demo-text{
+    margin-top: 1em;
+    padding-bottom: 2em;
+  }
+
+  .demo-text-darker{
+    margin-top: -2em;
+    padding-bottom: 0em;
+    text-align: center;
+    width:100vw;
+  }
+
+  .demos-darker{
+    display: block;
+    padding-top: 6em;
   }
 }
 

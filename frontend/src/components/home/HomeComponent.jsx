@@ -6,7 +6,7 @@ import { getResidence } from '../../services/database'
 
 import {AppBar, Toolbar, Typography, Button, IconButton, 
   Drawer, List, Divider, ListItem, ListItemIcon, ListItemText, Snackbar} from '@material-ui/core';
-import {Menu, ChevronLeft, ChevronRight, Home, Close, RemoveCircle, InsertChart, ReportProblem} from '@material-ui/icons';
+import {Face, Menu, ChevronLeft, ChevronRight, Home, Close, RemoveCircle, InsertChart, ReportProblem} from '@material-ui/icons';
 
 export default class HomeComponent extends Component {
   state = {
@@ -53,7 +53,7 @@ export default class HomeComponent extends Component {
   }
   
   render() {
-    const { left, open, message, thisUser, residence } = this.state
+    const { left, open, message, thisUser, residence, user } = this.state
     const { logout, handleClose } = this
     const sideList = (
       <div style={{width: 250}}>
@@ -66,13 +66,13 @@ export default class HomeComponent extends Component {
               <ListItemText primary="Inicio" />
             </ListItem>
           </Link>
-          <Link exact to="/app/admin" 
+          {user.role === "Administrador" ? <Link exact to="/app/admin" 
             style={{textDecoration: "none"}}>
             <ListItem button >
               <ListItemIcon><InsertChart/></ListItemIcon>
               <ListItemText primary="Administrador" />
             </ListItem>
-          </Link>
+          </Link> : ""}
           <Link exact to="/app/addReport" 
             style={{textDecoration: "none"}}>
             <ListItem button >
