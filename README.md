@@ -1,9 +1,9 @@
-#Querido Vecino
+# Querido Vecino
 
-##Aplicación que ayuda a administrar unidades habitacionales / condominios / departamentos
+## Aplicación que ayuda a administrar unidades habitacionales / condominios / departamentos
 
 
-###FRONTEND
+### FRONTEND
 
 1. Descarga o clona el repositorio
 2. Dentro de la carpeta root, ejecuta: **npm install** o **yarn install**
