@@ -196,11 +196,11 @@ export default class Signup extends Component {
             value={user.residence}
             margin="normal"
             >
-                {residences.map((residence, key) => (
+                {residences ? residences.map((residence, key) => (
                     <MenuItem key={key} value={residence._id}>
                     {residence.residenceName}
                     </MenuItem>
-                ))}
+                )) : ""}
             </TextField>
         </div>
         <div>

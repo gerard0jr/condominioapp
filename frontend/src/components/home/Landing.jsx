@@ -24,15 +24,16 @@ export default class Landing extends Component {
     detail: "",
     openDialog: false,
     openDialogInfo: false,
-    report: 0
+    report: 0, 
+    reports: []
   }
-  
+
   componentDidMount = () => {
     const user = JSON.parse(localStorage.getItem('user'));
     this.setState({user})
     if (!user) return this.props.history.push('/auth/login')
     getResidence(user.residence)
-    .then(residence => this.setState({residence}))
+    .then(residence => this.setState({residence, reports: residence.reports}))
     .catch(err => console.log(err))
   }
 
@@ -87,8 +88,9 @@ export default class Landing extends Component {
   }
 
   render() {
-    const { user,residence, open, message, page, page2,rowsPerPage, rowsPerPage2, incomeDetails, outcomeDetails, openDialog, openDialogInfo, report } = this.state
+    const { user,residence, open, message, page, page2,rowsPerPage, rowsPerPage2, incomeDetails, outcomeDetails, openDialog, openDialogInfo, report, reports } = this.state
     const { handleChangePage, handleChangePage2, handleChangeRowsPerPage, handleClose, resolved, closeDialog, openDial, openDialInfo } = this
+    console.log(reports)
     return (
       <div style={{backgroundColor:"#ececec", height:"100%"}}>
         <div style={{
@@ -161,7 +163,7 @@ export default class Landing extends Component {
         <DialogTitle id="responsive-dialog-title-view">{"Reporte"}</DialogTitle>
           <DialogContent>
             <DialogContentText>
-             {residence.reports ? residence.reports[report].description : ""}
+             {reports.length !== 0 ? reports[report].description : "" }
             </DialogContentText>
           </DialogContent>
           <DialogActions>
